@@ -1,22 +1,12 @@
 <template>
   <div id="app">
-    <span class="text">ABCDEFG</span>
     <router-view/>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-export default {
-  computed: {
-    ...mapGetters(['test'])
-  },
-  mounted () {
-    this.$store.dispatch('setTest', 50).then(() => {
-      console.log(this.test)
-    })
-  }
-}
+
+export default {}
   document.addEventListener('DOMContentLoaded', () => {
     const html = document.querySelector('html')
     let fontSize = window.innerWidth / 10
@@ -26,10 +16,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./assets/styles/global";
-.text {
-  font-family: 'Days One';
-  font-size:px2rem(20);
-  color: orange;
-}
+  #app {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
 </style>
