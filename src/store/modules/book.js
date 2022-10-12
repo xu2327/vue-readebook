@@ -3,7 +3,7 @@ const book = {
       fileName: '',
       menuVisible: false,
       settingVisible: -1,
-      defaultFontSize: 16,
+      defaultFontSize: '16px',
       defaultFontFamily: 'Default',
       fontFamilyVisible: false,
       defaultTheme: 'default',

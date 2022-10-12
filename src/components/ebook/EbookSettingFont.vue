@@ -2,19 +2,19 @@
   <transition name="slide-up">
     <div class="setting-wrapper" v-show="menuVisible && settingVisible === 0">
       <div class="setting-font-size" >
-        <div class="preview" :style="{fontSize: fontSizeList[0].fontSize + 'px'}">A</div>
+        <div class="preview" :style="{fontSize: fontSizeList[0].fontSize}">A</div>
         <div class="select">
           <div class="select-wrapper" ref="item" v-for="(item, index) in fontSizeList" :key="index" @click="setFontSize(item.fontSize)">
             <div class="line"></div>
             <div class="point-wrapper">
-              <div class="point" v-show="defaultFontSize === item.fontSize">
+              <div class="point" v-show="defaultFontSize === item.fontSize" >
                 <div class="small-point"></div>
               </div>
             </div>
             <div class="line"></div>
           </div>
         </div>
-        <div class="preview" :style="{fontSize: fontSizeList[fontSizeList.length - 1].fontSize + 'px'}">A</div>
+        <div class="preview" :style="{fontSize: fontSizeList[fontSizeList.length - 1].fontSize}">A</div>
       </div>
       <div class="setting-font-family">
         <div class="setting-font-family-text-wrapper" @click="showFontFamilyPopup">
@@ -43,7 +43,6 @@ export default {
         setFontSize (fontSize) {
           this.setDefaultFontSize(fontSize)
           // 老版本不兼容，所以要加上px，要放到下面，不然那个拉抓出不来
-          fontSize = fontSize + 'px'
           saveFontSize(this.fileName, fontSize)
           this.currentBook.rendition.themes.fontSize(fontSize)
         },
