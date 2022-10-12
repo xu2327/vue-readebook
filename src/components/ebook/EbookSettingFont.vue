@@ -16,12 +16,14 @@
         </div>
         <div class="preview" :style="{fontSize: fontSizeList[fontSizeList.length - 1].fontSize + 'px'}">A</div>
       </div>
-      <!-- <div class="setting-theme">
-        <div class="setting-theme-item" v-for="(item, index) in themeList" :key="index" @click="setTheme(index)">
-          <div class="preview" :style="{background: item.style.body.background}" :class="{'no-border': item.style.body.background !== '#fff'}"></div>
-          <div class="text" :class="{'selected': index === defaultTheme}">{{item.name}}</div>
+      <div class="setting-font-family">
+        <div class="setting-font-family-text-wrapper" @click="showFontFamilyPopup">
+          <span class="setting-font-family-text">{{defaultFontFamily}}</span>
         </div>
-      </div> -->
+        <div class="setting-font-family-icon-wrapper">
+          <span class="icon-forward"></span>
+        </div>
+      </div>
     </div>
   </transition>
 </template>
@@ -29,6 +31,7 @@
 <script>
 import { FONT_SIZE_LIST } from '../../utils/book'
 import { ebookMixin } from '../../utils/mixin'
+import { saveFontSize } from '@/utils/localStorage'
 export default {
     mixins: [ebookMixin],
     data () {
@@ -38,9 +41,14 @@ export default {
     },
     methods: {
         setFontSize (fontSize) {
-          fontSize = fontSize + 'px'
           this.setDefaultFontSize(fontSize)
+          // 老版本不兼容，所以要加上px，要放到下面，不然那个拉抓出不来
+          fontSize = fontSize + 'px'
+          saveFontSize(this.fileName, fontSize)
           this.currentBook.rendition.themes.fontSize(fontSize)
+        },
+        showFontFamilyPopup () {
+          this.setFontFamilyVisible(true)
         }
     }
 }
@@ -53,11 +61,14 @@ export default {
     bottom: px2rem(48);
     left: 0;
     z-index: 101;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: px2rem(90);
     background: white;
     box-shadow: 0 px2rem(-8) px2rem(8) rgba(0, 0, 0, .15);
     .setting-font-size {
+      flex: 2;
       display: flex;
       height: 100%;
       .preview {
@@ -124,10 +135,10 @@ export default {
       font-size: px2rem(14);
       @include center;
       .setting-font-family-text-wrapper {
-        @include center;
+      @include center;
       }
       .setting-font-family-icon-wrapper {
-        @include center;
+      @include center;
       }
     }
 </style>
