@@ -11,7 +11,9 @@ import {
     getFontFamily,
     saveFontFamily,
     getFontSize,
-    saveFontSize
+    saveFontSize,
+    getTheme,
+    saveTheme
     } from '@/utils/localStorage'
 global.epub = Epub
 export default {
@@ -59,6 +61,18 @@ export default {
                 this.setDefaultFontFamily(font)
             }
         },
+        initTheme () {
+            let defaultTheme = getTheme(this.fileName)
+            if (!defaultTheme) {
+                defaultTheme = this.themeList[0].name
+                this.setDefaultTheme(defaultTheme)
+                saveTheme(this.fileName, defaultTheme)
+            }
+            this.themeList.forEach(theme => {
+                this.rendition.themes.register(theme.name, theme.style)
+            })
+            this.rendition.themes.select(defaultTheme)
+        },
         initEpub () {
         const url = 'http://127.0.0.1:8081/epub/' + this.fileName + '.epub'
         this.book = new Epub(url)
@@ -66,9 +80,11 @@ export default {
         this.rendition = this.book.renderTo('read', {
             width: innerWidth,
             height: innerHeight
+            // method: 'Default'  这里是微信的兼容 Epub版本不兼容，加了会报错
         })
 
         this.rendition.display().then(() => {
+            this.initTheme()
             this.initFontSize()
             this.initFontFamily()
         })

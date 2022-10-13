@@ -130,7 +130,7 @@ const messages = {
     selectFont: 'Select Font',
     haveRead: 'Already read $1 minutes',
     themeDefault: 'Default',
-    themeGold: 'Grace',
+    themeGold: 'Gold',
     themeEye: 'Eye',
     themeNight: 'Night',
     loading: 'Loading...',

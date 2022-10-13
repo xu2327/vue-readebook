@@ -6,7 +6,7 @@ const book = {
       defaultFontSize: '16px',
       defaultFontFamily: 'Default',
       fontFamilyVisible: false,
-      defaultTheme: 'default',
+      defaultTheme: 'Default',
       bookAvailable: false,
       progress: 0,
       section: 0,
