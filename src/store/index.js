@@ -7,9 +7,9 @@ import actions from './actions'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-    modules: {
-        book
-    },
-    getters,
-    actions
+  modules: {
+    book
+  },
+  getters,
+  actions
 })
