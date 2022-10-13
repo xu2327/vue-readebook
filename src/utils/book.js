@@ -24,7 +24,7 @@ export function themeList (vue) {
       style: {
         body: {
           'color': '#4c5059',
-          'background': '#cecece !important'
+          'background': '#cecece'
         }
       }
     },
@@ -34,7 +34,7 @@ export function themeList (vue) {
       style: {
         body: {
           'color': '#5c5b56',
-          'background': '#c6c2b6 !important'
+          'background': '#c6c2b6'
         }
       }
     },
@@ -44,7 +44,7 @@ export function themeList (vue) {
       style: {
         body: {
           'color': '#404c42',
-          'background': '#a9c1a9 !important'
+          'background': '#a9c1a9'
         }
       }
     },
@@ -54,7 +54,7 @@ export function themeList (vue) {
       style: {
         body: {
           'color': '#cecece',
-          'background': '#000000 !important'
+          'background': '#000000'
         }
       }
     }
