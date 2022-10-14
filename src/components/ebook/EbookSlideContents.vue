@@ -44,7 +44,7 @@
                 @click="displayContent(item.href)">
                 {{item.label}}
             </span>
-            <span class="slide-contents-item-page"></span>
+            <span class="slide-contents-item-page">{{item.page}}</span>
         </div>
     </scroll>
     <scroll class="slide-search-list" :top="66" :bottom="48" v-show="searchVisible">
@@ -227,7 +227,11 @@ export default {
                     line-height: px2rem(16);
                     @include ellipsis;
                 }
-                .slide-contents-item-page {}
+                .slide-contents-item-page {
+                    flex: 0 0 px2rem(30);
+                    font-size: px2rem(10);
+                    @include right;
+                }
             }
         }
         .slide-search-list {
