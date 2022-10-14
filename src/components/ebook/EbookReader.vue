@@ -1,6 +1,7 @@
 <template>
   <div class="ebook-reader">
     <div id="read"></div>
+    <div class="ebook-reader-mask" @click="onMaskClick" @touchmove="move" @touchend="moveEnd"></div>
   </div>
 </template>
 
@@ -21,6 +22,32 @@ global.epub = Epub
 export default {
     mixins: [ebookMixin],
     methods: {
+        move (e) {
+            let offsetY = 0
+            if (this.firstOffsetY) {
+                offsetY = e.changedTouches[0].clientY - this.firstOffsetY
+                this.setOffsetY(offsetY)
+            } else {
+                this.firstOffsetY = e.changedTouches[0].clientY
+            }
+            e.preventDefault()
+            e.stopPropagation()
+        },
+        moveEnd (e) {
+            this.setOffsetY(0)
+            this.firstOffsetY = null
+        },
+        onMaskClick (e) {
+            const offsetX = e.offsetX
+            const width = window.innerWidth
+            if (offsetX > 0 && offsetX < width * 0.3) {
+                this.prevPage()
+            } else if (offsetX > 0 && offsetX > width * 0.7) {
+                this.nextPage()
+            } else {
+                this.toggleTitleAndMenu()
+            }
+        },
         prevPage () {
             if (this.rendition) {
                 this.rendition.prev().then(() => {
@@ -77,8 +104,8 @@ export default {
         initRendition () {
             this.rendition = this.book.renderTo('read', {
                 width: innerWidth,
-                height: innerHeight
-                // method: 'Default'  //这里是微信的兼容 Epub版本不兼容，加了会报错
+                height: innerHeight,
+                method: 'default'
             })
             const location = getLocation(this.fileName)
             this.display(location, () => {
@@ -143,7 +170,7 @@ export default {
         this.book = new Epub(url)
         this.setCurrentBook(this.book)
         this.initRendition()
-        this.initGesture()
+        // this.initGesture()
         this.parseBook()
         this.book.ready.then(() => {
             return this.book.locations.generate(750 * (window.innerWidth / 375) * (getFontSize(this.fileName) / 16))
@@ -165,4 +192,18 @@ export default {
 
 <style lang="scss" rel="stylesheet/scss" scoped>
     @import "../../assets/styles/global";
+    .ebook-reader {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        .ebook-reader-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: transparent;
+            z-index: 150;
+            width: 100%;
+            height: 100%;
+        }
+    }
 </style>
