@@ -21,6 +21,7 @@
     <ebook-setting-theme></ebook-setting-theme>
     <ebook-setting-progess></ebook-setting-progess>
     <ebook-slide></ebook-slide>
+    <ebook-slide-bookmark></ebook-slide-bookmark>
     </div>
 </template>
 
@@ -29,6 +30,7 @@ import EbookSettingFont from './EbookSettingFont'
 import EbookSettingFontPopup from './EbookSettingFontPopub'
 import EbookSettingTheme from './EbookSettingTheme'
 import EbookSettingProgess from './EbookSettingProgress'
+import EbookSlideBookmark from './EbookSlideBookmark'
 import EbookSlide from './EbookSlide'
 import { ebookMixin } from '../../utils/mixin'
 
@@ -39,7 +41,8 @@ export default {
         EbookSettingFontPopup,
         EbookSettingTheme,
         EbookSettingProgess,
-        EbookSlide
+        EbookSlide,
+        EbookSlideBookmark
     },
     methods: {
         showSetting (key) {
