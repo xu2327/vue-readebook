@@ -1,6 +1,7 @@
 <template>
   <div class="store-home">
     <search-bar></search-bar>
+    <flap-card :data="random"></flap-card>
     <scroll :top="scrollTop" @onScroll="onScroll" ref="scroll">
       <div>11111111111111111</div>
       <div>11111111111111111</div>
@@ -34,17 +35,21 @@
 <script>
 import SearchBar from '../../components/home/SearchBar.vue'
 import Scroll from '../../components/common/Scroll.vue'
+import FlapCard from '../../components/home/FlapCard.vue'
+import { home } from '../../api/store'
 import { storeHomeMixin } from '../../utils/mixin'
 
 export default {
   mixins: [storeHomeMixin],
   components: {
       SearchBar,
-      Scroll
+      Scroll,
+      FlapCard
   },
   data () {
     return {
-      scrollTop: 94
+      scrollTop: 94,
+      random: null
     }
   },
   methods: {
@@ -57,6 +62,15 @@ export default {
       }
       this.$refs.scroll.refresh()
     }
+  },
+  mounted () {
+    home().then((response) => {
+      if (response && response.status === 200) {
+        const data = response.data
+        const randomIndex = Math.floor(Math.random() * data.random.length)
+        this.random = data.random[randomIndex]
+      }
+    })
   }
 }
 </script>

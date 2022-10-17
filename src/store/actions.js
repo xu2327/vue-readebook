@@ -59,9 +59,10 @@ const actions = {
   setHotSearchOffsetY ({ commit }, offsetY) {
     return commit('SET_HOT_SEARCH_OFFSETY', offsetY)
   },
-  setSpeakingIconBottom ({ commit }, speakingIconBottom) {
-    commit('SET_SPEAKING_ICON_BOTTOM', speakingIconBottom)
+  setFlapCardVisible ({ commit }, visible) {
+    return commit('SET_FLAP_CARD_VISIBLE', visible)
   }
+
 }
 
 export default actions
