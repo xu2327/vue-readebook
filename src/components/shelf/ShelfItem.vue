@@ -5,7 +5,10 @@
               :is="item" :data="data"
               >
     </component>
-    <div class="icon-selected" v-show="isEditMode && data.type === 1"></div>
+    <div  class="icon-selected"
+          v-show="isEditMode && data.type === 1"
+          :class="{'is-selected': data.selected}">
+    </div>
   </div>
 </template>
 
@@ -35,11 +38,20 @@ export default {
   },
   methods: {
     onItemClick () {
-      if (this.data.type === 1) {
-        this.showBookDetail(this.data)
-      } else if (this.data.type === 2) {
+      if (this.isEditMode) {
+        this.data.selected = !this.data.selected
+        if (this.data.selected) {
+          this.shelfSelected.pushWithoutDuplicate(this.data)
+        } else {
+          this.setShelfSelected(this.shelfSelected.filter(item => item.id !== this.data.id))
+        }
       } else {
-        gotoStoreHome(this)
+        if (this.data.type === 1) {
+          this.showBookDetail(this.data)
+        } else if (this.data.type === 2) {
+        } else {
+          gotoStoreHome(this)
+        }
       }
     }
   }
@@ -68,6 +80,9 @@ export default {
         right: px2rem(2);
         font-size: px2rem(18);
         color: rgba(0,0,0,.4);
+        &.is-selected {
+          color: $color-blue;
+        }
       }
     }
 
