@@ -4,7 +4,7 @@ const store = {
         flapCardVisible: false,
         isEditMode: false,
         shelfList: [],
-        shelfSelected: [1, 2, 3],
+        shelfSelected: [],
         shelfTitleVisible: true
     },
     mutations: {

@@ -1,8 +1,11 @@
 <template>
   <div class="store-shelf">
     <shelf-title></shelf-title>
-    <scroll class="store-shelf-scroll-wrapper" :top="0">
+    <scroll class="store-shelf-scroll-wrapper"
+            :top="0"
+            @onScroll="onScroll">
       <shelf-search></shelf-search>
+      <shelf-list></shelf-list>
     </scroll>
   </div>
 </template>
@@ -11,16 +14,34 @@
 import Scroll from '../../components/common/Scroll.vue'
 import ShelfSearch from '../../components/shelf/ShelfSearch.vue'
 import ShelfTitle from '../../components/shelf/ShelfTitle.vue'
+import ShelfList from '../../components/shelf/ShelfList.vue'
 import { storeShelfMixin } from '../../utils/mixin'
+import { shelf } from '../../api/store'
+import { appendAddToShelf } from '../../utils/store'
 
 export default {
   mixins: [ storeShelfMixin ],
   components: {
     Scroll,
     ShelfTitle,
-    ShelfSearch
+    ShelfSearch,
+    ShelfList
+  },
+  methods: {
+    onScroll (offsetY) {
+      this.setOffsetY(offsetY)
+    },
+    getShelfList () {
+      shelf().then(response => {
+        if (response.status === 200 && response.data && response.data.bookList) {
+          this.setShelfList(appendAddToShelf(response.data.bookList))
+        }
+      })
+    }
+  },
+  mounted () {
+    this.getShelfList()
   }
-
 }
 </script>
 
