@@ -1,4 +1,4 @@
-const getters = {
+const book = {
   fileName: state => state.book.fileName,
   menuVisible: state => state.book.menuVisible,
   settingVisible: state => state.book.settingVisible,
@@ -23,7 +23,9 @@ const getters = {
   isEditMode: state => state.store.isEditMode,
   shelfList: state => state.store.shelfList,
   shelfSelected: state => state.store.shelfSelected,
-  shelfTitleVisible: state => state.store.shelfTitleVisible
+  shelfTitleVisible: state => state.store.shelfTitleVisible,
+  shelfCategory: state => state.store.shelfCategory,
+  currentType: state => state.store.currentType
 }
 
-export default getters
+export default book

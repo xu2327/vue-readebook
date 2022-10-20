@@ -19,7 +19,9 @@
 
 <script>
 import { storeShelfMixin } from '../../utils/mixin'
-import { saveBookShelf } from '../../utils/localStorage'
+import { removeLocalStorage, saveBookShelf } from '../../utils/localStorage'
+import { download } from '../../api/store'
+import { removeLocalForage } from '../../utils/localForage'
 export default {
     mixins: [storeShelfMixin],
     computed: {
@@ -69,8 +71,46 @@ export default {
         }
     },
     methods: {
-        downloadSelectedBook () {
-
+        async downloadSelectedBook () {
+            for (let i = 0; i < this.shelfSelected.length; i++) {
+                await this.downloadBook(this.shelfSelected[i]).then(book => {
+                    book.cache = true
+                })
+            }
+        },
+        downloadBook (book) {
+            let text = ''
+            const toast = this.toast({
+                text
+            })
+            toast.continueShow()
+            return new Promise((resolve, reject) => {
+                download(book, book => {
+                    toast.remove()
+                    resolve(book)
+                }, reject, progressEvent => {
+                    const progress = Math.floor(progressEvent.loaded / progressEvent.total * 100) + '%'
+                    text = this.$t('shelf.progressDownload').replace('$1', `${book.fileName}.epub(${progress})`)
+                    toast.updateText(text)
+                })
+            })
+        },
+        removeSelectedBook () {
+            Promise.all(this.shelfSelected.map(book => this.removeBook(book)))
+            .then(books => {
+                books.map(book => {
+                    book.cache = false
+                })
+                saveBookShelf(this.shelfList)
+                this.simpleToast(this.$t('shelf.removeDownloadSuccess'))
+            })
+        },
+        removeBook (book) {
+            return new Promise((resolve, reject) => {
+                removeLocalStorage(`${book.categoryText}/${book.fileName}-info`)
+                removeLocalForage(`${book.fileName}`)
+                resolve(book)
+            })
         },
         hidePopup () {
             this.popupMenu.hide()
@@ -116,22 +156,14 @@ export default {
                 ]
             }).show()
         },
-        setDownload () {
-            let isDownload
-            if (this.isDownload) {
-                isDownload = false
-            } else {
-                isDownload = true
-            }
-            this.shelfSelected.forEach(book => {
-                book.cache = isDownload
-            })
-            this.downloadSelectedBook()
+        async setDownload () {
             this.onComplete()
-            if (isDownload) {
-                this.simpleToast(this.$t('shelf.setDownloadSuccess'))
+            if (this.isDownload) {
+                this.removeSelectedBook()
             } else {
-                this.simpleToast(this.$t('shelf.removeDownloadSuccess'))
+                await this.downloadSelectedBook()
+                saveBookShelf(this.shelfList)
+                this.simpleToast(this.$t('shelf.setDownloadSuccess'))
             }
         },
         showDownload () {
@@ -199,6 +231,7 @@ export default {
                     this.showDownload()
                     break
                 case 3:
+                    this.dialog().show()
                     break
                 case 4:
                     this.showRemove()
