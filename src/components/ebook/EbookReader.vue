@@ -215,7 +215,7 @@ export default {
         this.book = new Epub(url)
         this.setCurrentBook(this.book)
         this.initRendition()
-        // this.initGesture()
+        this.initGesture()
         this.parseBook()
         this.book.ready.then(() => {
             return this.book.locations.generate(750 * (window.innerWidth / 375) * (getFontSize(this.fileName) / 16))
